@@ -6,7 +6,7 @@ A python-based script that will display a user's top posts from each of their mu
 
    pip
 
-   praw (pip install praw)
+   praw (python3 -m pip install praw)
 
    a text editor
 
