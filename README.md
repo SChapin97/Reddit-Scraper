@@ -1,5 +1,5 @@
 # Reddit-Scraper
-A python-based script that will display a user's top posts from each of their multireddits.
+A collection of python-based scripts that are used to automate the process of looking at one's reddit feed
 
 # Requirements:
    python3 and pip3 (`sudo apt install python3-pip`)
