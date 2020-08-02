@@ -1,6 +1,3 @@
-# Reddit-Scraper
-A collection of python-based scripts that are used to automate the process of looking at one's reddit feed
-
 # Requirements:
    python3 and pip3 (`sudo apt install python3-pip`)
 
