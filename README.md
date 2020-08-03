@@ -25,5 +25,5 @@ Used to output the top 5 posts from each subreddit in each multireddit for your 
 The goal for this script is to send me daily updates about the various subreddits I care about (packaged into different multireddits based on subject).
 Similarly to buildapcsales.py, I will likely also have the output emailed to me on a daily bases (by using a cronjob)
 
-## laptopdeals.py :: Not Started
-Basically the same thing as buildapcsales.py, but with the /r/laptopdeals subreddit. Will probably be used in the same fashion as buildapcsales.py.
+## laptopdeals.py :: Fully Working
+Basically the same thing as buildapcsales.py, but with the /r/laptopdeals subreddit.
