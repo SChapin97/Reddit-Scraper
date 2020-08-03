@@ -1,6 +1,5 @@
 import praw
 import time
-import re
 import os
 
 reddit = praw.Reddit("bot1", user_agent="Post Scraper")
