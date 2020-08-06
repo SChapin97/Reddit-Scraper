@@ -44,5 +44,7 @@ def printPost(post):
     print(post.title, "; Upvotes:", post.score) #, post.created_utc)
     print("Reddit link: http://redd.it/" + post.id)
     print("Post link:", post.url)
+    if "http" in post.thumbnail:
+        print("Thumbnail link:", post.thumbnail)
 
 laptopdeals_posts()
