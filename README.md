@@ -16,8 +16,8 @@ Used to output the newest posts from /r/buildapcsales, then print any posts that
 Post redundancy is built into this file (any posts that are printed will have their IDs stored in the `previous_posts` file and will not be printed again).
 
 Personally, the script is not very useful on its own, but I have a cronjob that will run the script every 5 minutes and email me (using `postfix`) if an item has been found.
-How I do this is by writing the output to a file `mailfile`, then doing a shell check of `if [[ -f "mailfile" && -s "mailfile"]]` and running the `mail` command with the contents of `mailfile` being the body of the email.
-Cronjob is as such: `*/5 * * * * (cd <directory installed> ; <execute email shell script>)`
+Use mail_posts.sh in a cronjob to automate this process (if you have a dedicated server you can put this script on)
+Cronjob (`crontab -e`) is as such: `*/5 * * * * (cd <directory installed> ; /bin/bash mail_posts.sh)`
 
 ## top_posts.py :: In Development
 Used to output the top 5 posts from each subreddit in each multireddit for your reddit account.
