@@ -8,6 +8,7 @@ post_redundancy_file_path = "previous_posts"
 
 def laptopdeals_posts():
     bapcs = reddit.subreddit("laptopdeals")
+    printedPosts = False #Used so we can output the end of the html doc
 
     #Making sure that previous_posts exists
     if not os.path.exists(post_redundancy_file_path):
@@ -39,12 +40,18 @@ def laptopdeals_posts():
             redundant_file.write(post.id + "\r\n")
             redundant_file.close()
             printPost(post)
+            printedPosts = True
+
+    if printedPosts:
+        print("\t</body>\n</html>")
 
 def printPost(post):
-    print(post.title, "; Upvotes:", post.score) #, post.created_utc)
-    print("Reddit link: http://redd.it/" + post.id)
-    print("Post link:", post.url)
+    #TODO: Might have to do some character replacement for HTML escaping
+    print("\t\t<div>")
+    print("\t\t\t<a href=\"http://redd.it/" + post.id + "\">" + post.title + "</a>")
+    print("\t\t\t<a href=\"" + post.url + "\">Link to the product</a>")
     if "http" in post.thumbnail:
-        print("Thumbnail link:", post.thumbnail)
+        print("\t\t\t<img src=\"" + post.thumbnail + "\" alt = \"Thumbnail image from the post\">")
+    print("\t\t</div>")
 
 laptopdeals_posts()
