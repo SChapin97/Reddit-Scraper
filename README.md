@@ -1,9 +1,12 @@
 # Requirements:
    python3 and pip3 (`sudo apt install python3-pip`)
+   
    praw (`python3 -m pip install praw`)
+   
    a text editor (needed to configure personal settings)
 
    (Optional -- for mailing the output):
+   
    A (linux mail server) to host the script/send the emails using `mail_posts.sh`
 
 # Usage:
