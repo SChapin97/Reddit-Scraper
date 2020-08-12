@@ -14,7 +14,7 @@ rm mailfile
 python3 laptopdeals.py > mailfile
 
 if [[ -f "mailfile" && -s "mailfile" ]]; then
-   mail -a "Content-type: text/html" -r "sender@example.com.com" -s "laptopdeals alert" "recipient@example.com" < <(cat template.html mailfile)
+   mail -a "Content-type: text/html" -r "sender@example.com" -s "laptopdeals alert" "recipient@example.com" < <(cat template.html mailfile)
 fi
 
 rm mailfile
