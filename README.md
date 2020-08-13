@@ -3,6 +3,7 @@
    
    praw (`python3 -m pip install praw`)
    
+   A bash interface (Linux/MacOS/Windows Subsystem For Linux/Git Bash)
    a text editor (needed to configure personal settings)
 
    (Optional -- for mailing the output):
@@ -25,7 +26,7 @@ Use `mail_posts.sh` in a cronjob to automate this process (if you have a dedicat
 Cronjob (`crontab -e`) is as such: `*/5 * * * * (cd <directory installed> ; /bin/bash mail_posts.sh)`
 
 ## top_posts.py :: Fully working
-Usage: `cat template > output.html; python3 top_posts.py > output.html`
+Usage: `cat template > output.html; python3 top_posts.py >> output.html`
 Used to output the top posts (limit of 5) from each subreddit in each multireddit for your reddit account.
 
 The goal for this script is to send me daily updates about the various subreddits I care about (packaged into different multireddits based on subject).
