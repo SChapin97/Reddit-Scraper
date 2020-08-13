@@ -18,7 +18,7 @@ def multi_reddit():
 def top_posts(subreddit):
     for post in subreddit.top("day", limit=5):
         print("\t\t<div>")
-        print("\t\t\t<a href=\"http://reddit/" + post.id + "\">" + post.title + "</a>")
+        print("\t\t\t<a href=\"http://redd.it/" + post.id + "\">" + post.title + "</a>")
         #TODO: Fix type conversion issues
         #print("\t\t\t<p>Score:", str(post.score) + " (" + str(int(post.upvote_ratio * 100)) + "%);", "Comments:", post.num_comments +"</p>")
         if "http" in post.thumbnail:
