@@ -2,9 +2,11 @@ import praw
 import time
 import os
 import sys
+import html
 
 REDDIT_WRAPPER = praw.Reddit("bot1", user_agent="Post Scraper")
 POST_REDUNDANCY_FILE_PATH = "previous_posts"
+IMAGE_FORMATS = ["jpeg", "jpg", "png", "gif"]
 
 def main():
     #Currently only want to print ONE of the subreddits due to
@@ -14,11 +16,7 @@ def main():
         buildapcsales()
     elif "laptopdeals" in str(sys.argv):
         laptopdeals()
-    elif "gamecube" in str(sys.argv):
-        gamecube()
-    elif "vive" in str(sys.argv):
-        vive()
-        
+
 ##Subreddit-specific functions
 def buildapcsales():
     search_items = ["print", "lamp", "ikea", "CPU"]
@@ -32,21 +30,6 @@ def laptopdeals():
 
     subreddit = REDDIT_WRAPPER.subreddit("laptopdeals")
     iterate_posts(subreddit, search_items)
-
-
-def gamecube():
-    search_items = ["loader", "restock"]
-
-    subreddit = REDDIT_WRAPPER.subreddit("gamecube")
-    iterate_posts(subreddit, search_items)
-
-
-def vive():
-    search_items = ["restock", "deluxe", "strap", "wireless"]
-
-    subreddit = REDDIT_WRAPPER.subreddit("vive")
-    iterate_posts(subreddit, search_items)
-
 
 
 ##Generic functions
@@ -92,12 +75,26 @@ def iterate_posts(subreddit, search_items):
 
 #Generic print post information function
 def printPost(post):
-    #TODO: Might have to do some character replacement for HTML escaping
+    #If a url starts with /r/, it is a x-post and needs to have reddit.com prepended to it.
+    url = post.url
+    if url.startswith('/r/'):
+        url = 'https://reddit.com' + url
+
     print("\t\t<div>")
-    print("\t\t\t<a href=\"http://redd.it/" + post.id + "\">" + post.title + "</a>")
-    print("\t\t\t<a href=\"" + post.url + "\">Link to the product</a>")
+    print("\t\t\t<a href=\"http://redd.it/" + post.id + "\" class=\"post\">" + html.escape(post.title) + "</a>")
     if "http" in post.thumbnail:
-        print("\t\t\t<img src=\"" + post.thumbnail + "\" alt = \"Thumbnail image from the post\">")
+        if is_image(url):
+            print("\t\t\t<a href=\"" + url + "\" class=\"image\"><img src=\"" + url + "\" alt=\"Full sized image from the post\" class=\"image\"></a>")
+        else:
+            print("\t\t\t<a href=\"" + url + "\" class=\"image\"><img src=\"" + post.thumbnail + "\" alt=\"Thumbnail image from the post\" class=\"image\"></a>")
+    print("\t\t\t<a href=\"" + url + "\" class=\"link\">Link to the product</a>")
     print("\t\t</div>")
+
+def is_image(url):
+    for format in IMAGE_FORMATS:
+        if url.endswith(format):
+            return True
+    else:
+        return False
 
 main()
