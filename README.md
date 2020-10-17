@@ -25,8 +25,9 @@ I personally use `mail_subreddit_posts.sh` in a cronjob on a linux server that I
 Cronjob (`crontab -e`) is as such: `*/5 * * * * (cd <directory installed>; /bin/bash mail_subreddit_posts.sh)`
 
 ## multireddit_newsfeed.py :: Mostly complete
-Usage: `cat template.html > output.html; python3 multireddit_newsfeed.py >> output.html`
+Usage: `cat template.html > output.html; python3 multireddit_newsfeed.py `insert multireddit name`>> output.html`
 Used to output the top 5 posts (or less if less than 5 posts were created that day) from each subreddit in each multireddit for your reddit account.
+Each multireddit will be sent in a different email.
 
 Once complete, the script will output part of an html file with formatted links to each post, thumbnail to a linked image if present, and an outgoing link if the post is not a self post. When appended to the template file `template.html`, it can be viewed like a normal webpage, or emailed using `mail_newsfeed_posts.sh` (assuming `postfix` is setup on the linux machine the script is run on).
 Cronjob (`crontab -e`) is as such: `0 11 * * * (cd <directory installed>; /bin/bash mail_newsfeed_posts.sh)`. Note that this runs at 11 AM (according to the server). Use the site crontab.guru to easily change this if needed.

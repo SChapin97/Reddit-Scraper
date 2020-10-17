@@ -1,5 +1,6 @@
 import praw
 import html
+import sys
 
 reddit = praw.Reddit("bot1", user_agent="Post Scraper")
 IMAGE_FORMATS = ["jpeg", "jpg", "png", "gif"]
@@ -9,12 +10,12 @@ def multi_reddit():
     u_mreddits = u_user.multireddits()
 
     for mreddit in u_mreddits:
-        print("\t<h1>" + mreddit.name + "</h1>")
-        for subreddit in mreddit.subreddits:
-            print("\t<h2>" + subreddit.display_name + "</h2>")
-            top_posts(subreddit)
+        if mreddit.name == str(sys.argv[1]):
+            print("\t<h1>" + mreddit.name + "</h1>")
+            for subreddit in mreddit.subreddits:
+                print("\t<h2>" + subreddit.display_name + "</h2>")
+                top_posts(subreddit)
 
-    print("\t</body>\n</html>")
 
 def top_posts(subreddit):
     for post in subreddit.top("day", limit=5):
