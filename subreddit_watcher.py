@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import praw
 import time
 import os
@@ -6,35 +8,34 @@ import html
 
 REDDIT_WRAPPER = praw.Reddit("bot1", user_agent="Post Scraper")
 POST_REDUNDANCY_FILE_PATH = "previous_posts"
-IMAGE_FORMATS = ["jpeg", "jpg", "png", "gif"]
 
 def main():
-    #Currently only want to print ONE of the subreddits due to
-    #    template.html being handled outside of this script.
-    #TODO: Look into handling of the template inside of this script
     if "buildapcsales" in str(sys.argv):
         buildapcsales()
-    elif "laptopdeals" in str(sys.argv):
-        laptopdeals()
+    if "homelabsales" in str(sys.argv):
+        homelabsales()
 
 ##Subreddit-specific functions
 def buildapcsales():
-    search_items = ["print", "lamp", "ikea", "CPU"]
+    search_items = ["[meta]", "[other]", "UPS", "interrupt", "hdd", "hard drive"]
+    ignore_items = ["newegg shuffle", "newegg souffl", "prebuilt"]
 
     subreddit = REDDIT_WRAPPER.subreddit("buildapcsales")
-    iterate_posts(subreddit, search_items)
+    iterate_posts(subreddit, search_items, ignore_items)
 
 
-def laptopdeals():
-    search_items = ["xps", "thinkpad", "mac"]
 
-    subreddit = REDDIT_WRAPPER.subreddit("laptopdeals")
-    iterate_posts(subreddit, search_items)
+def homelabsales():
+    search_items = ["MN]", "camera", "security"]
+    ignore_items = ["[W"] #Subreddit title-style for wanted postings
+
+    subreddit = REDDIT_WRAPPER.subreddit("homelabsales")
+    iterate_posts(subreddit, search_items, ignore_items)
 
 
 ##Generic functions
 #Generic function to go through each posts on a subreddit's new posts list
-def iterate_posts(subreddit, search_items):
+def iterate_posts(subreddit, search_items, ignore_items):
     #Making sure that previous_posts exists
     if not os.path.exists(POST_REDUNDANCY_FILE_PATH):
         f = open(POST_REDUNDANCY_FILE_PATH, "w")
@@ -46,8 +47,12 @@ def iterate_posts(subreddit, search_items):
         printable = False
         for item in search_items:
             if item.upper() in post.title.upper():
-                printable = True
-                break
+                for ignore in ignore_items:
+                    if ignore.upper() in post.title.upper():
+                        break
+                else: #This statement is redundant, but it makes this slightly more readable
+                    printable = True
+                    break
 
         if not printable:
             continue
@@ -64,13 +69,10 @@ def iterate_posts(subreddit, search_items):
         if not found:
             redundant_file = open(POST_REDUNDANCY_FILE_PATH, "a")
             #Adding to the redundant post file
-            redundant_file.write(post.id + "\r\n")
+            redundant_file.write(post.id + "\n")
             redundant_file.close()
             printPost(post)
             printed_posts = True
-
-    if printed_posts:
-        print("\t</body>\n</html>")
 
 
 #Generic print post information function
@@ -80,21 +82,7 @@ def printPost(post):
     if url.startswith('/r/'):
         url = 'https://reddit.com' + url
 
-    print("\t\t<div>")
-    print("\t\t\t<a href=\"http://redd.it/" + post.id + "\" class=\"post\">" + html.escape(post.title) + "</a>")
-    if "http" in post.thumbnail:
-        if is_image(url):
-            print("\t\t\t<a href=\"" + url + "\" class=\"image\"><img src=\"" + url + "\" alt=\"Full sized image from the post\" class=\"image\"></a>")
-        else:
-            print("\t\t\t<a href=\"" + url + "\" class=\"image\"><img src=\"" + post.thumbnail + "\" alt=\"Thumbnail image from the post\" class=\"image\"></a>")
-    print("\t\t\t<a href=\"" + url + "\" class=\"link\">Link to the product</a>")
-    print("\t\t</div>")
-
-def is_image(url):
-    for format in IMAGE_FORMATS:
-        if url.endswith(format):
-            return True
-    else:
-        return False
+    print(post.title + "\n", "<https://redd.it/" + post.id + ">")
+    print("Link to the product: <" + url + ">\n<end_item>\n")
 
 main()
